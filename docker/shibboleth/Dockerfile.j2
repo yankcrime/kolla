@@ -1,0 +1,22 @@
+FROM {{ namespace }}/{{ image_prefix }}base:{{ tag }}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+
+{% block shibboleth_header %}{% endblock %}
+
+{% import "macros.j2" as macros with context %}
+
+{% if base_arch != 'x86_64' %}
+
+RUN echo 'There are no Shibboleth external repositories for {{ base_arch }}' \
+    && /bin/false
+
+{% endif %}
+
+{% set shibboleth_packages = ['shibboleth', 'libcurl-openssl'] %}
+{{ macros.install_packages(shibboleth_packages | customizable("packages")) }}
+
+{% block shibboleth_footer %}{% endblock %}
+
+{% block footer %}{% endblock %}
+
+USER shibd
