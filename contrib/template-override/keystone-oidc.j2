@@ -1,0 +1,4 @@
+{% extends parent_template %}
+
+# Include OpenID Connect module for Apache httpd
+{% set keystone_base_packages_append = ['mod_auth_openidc'] %}
